@@ -5,5 +5,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+	
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\HealthRecord.DAL\HealthRecord1.DAL.csproj" />
+  </ItemGroup>
 
 </Project>

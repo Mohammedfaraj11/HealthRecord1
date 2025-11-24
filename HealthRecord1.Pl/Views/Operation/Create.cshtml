@@ -1,0 +1,49 @@
+@model HealthRecord1.BLL.Models.OperationVM
+
+@{
+    ViewBag.Title = "إضافة عملية";
+    var Item = Model;
+}
+
+<h2>إضافة عملية جديدة</h2>
+<br /> <br/>
+<p>@TempData["ErrorMessage"]</p>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name">الاسم</label>
+        <input asp-for="Name" class="form-control" required />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Date">التاريخ</label>
+        <input asp-for="Date" type="datetime-local" class="form-control" required />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Notes">الملاحظات</label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="Duration">المدة (دقائق)</label>
+        <input asp-for="Duration" type="number" class="form-control" required />
+        <span asp-validation-for="Duration" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Surgeon">الجراح</label>
+        <input asp-for="Surgeon" class="form-control" required />
+        <span asp-validation-for="Surgeon" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="MedicalTeam">الفريق الطبي</label>
+        <input asp-for="MedicalTeam" class="form-control" required />
+        <span asp-validation-for="MedicalTeam" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PatientId">معرف المريض</label>
+        <input asp-for="PatientId" type="number" class="form-control" required />
+        <span asp-validation-for="PatientId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">إضافة</button>
+    <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
+</form>

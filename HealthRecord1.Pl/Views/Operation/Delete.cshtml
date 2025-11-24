@@ -1,0 +1,37 @@
+@model HealthRecord1.BLL.Models.OperationVM
+
+@{
+    ViewBag.Title = "حذف عملية";
+    var Item = Model;
+}
+
+<h2>حذف العملية</h2>
+
+<h3>هل أنت متأكد من حذف هذه العملية؟</h3>
+
+<div class="alert alert-warning">
+    <strong>تحذير:</strong> هذا الإجراء لا يمكن التراجع عنه.
+</div>
+
+<dl class="row">
+    <dt class="col-sm-2">المعرف</dt>
+    <dd class="col-sm-10">@Item.Id</dd>
+    <dt class="col-sm-2">الاسم</dt>
+    <dd class="col-sm-10">@Item.Name</dd>
+    <dt class="col-sm-2">التاريخ</dt>
+    <dd class="col-sm-10">@Item.Date.ToShortDateString()</dd>
+    <dt class="col-sm-2">الجراح</dt>
+    <dd class="col-sm-10">@Item.Surgeon</dd>
+    <dt class="col-sm-2">المدة (دقائق)</dt>
+    <dd class="col-sm-10">@Item.Duration</dd>
+    <dt class="col-sm-2">الفريق الطبي</dt>
+    <dd class="col-sm-10">@Item.MedicalTeam</dd>
+    <dt class="col-sm-2">الملاحظات</dt>
+    <dd class="col-sm-10">@Item.Notes</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">حذف</button>
+    <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
+</form>

@@ -1,6 +1,15 @@
+using HealthRecord1.DAL.Database;
+using HealthRecord1.BLL.Interfaces;
+using HealthRecord1.BLL.Repository;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+
+// Add DbContext configuration
+builder.Services.AddDbContext<MyContext>();
+
 
 var app = builder.Build();
 

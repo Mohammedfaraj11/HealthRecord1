@@ -1,0 +1,41 @@
+@model IEnumerable<HealthRecord1.BLL.Models.OperationVM>
+
+@{
+    ViewBag.Title = "العمليات";
+}
+
+<h2>قائمة العمليات</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">إضافة عملية جديدة</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>المعرف</th>
+            <th>الاسم</th>
+            <th>التاريخ</th>
+            <th>الجراح</th>
+            <th>المدة (دقائق)</th>
+            <th>الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Item in Model)
+        {
+            <tr>
+                <td>@Item.Id</td>
+                <td>@Item.Name</td>
+                <td>@Item.Date.ToShortDateString()</td>
+                <td>@Item.Surgeon</td>
+                <td>@Item.Duration</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@Item.Id" class="btn btn-info btn-sm">التفاصيل</a>
+                    <a asp-action="Update" asp-route-id="@Item.Id" class="btn btn-warning btn-sm">تعديل</a>
+                    <a asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-danger btn-sm">حذف</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

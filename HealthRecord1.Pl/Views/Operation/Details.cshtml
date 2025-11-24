@@ -1,0 +1,35 @@
+@model HealthRecord1.BLL.Models.OperationVM
+
+@{
+    ViewBag.Title = "تفاصيل العملية";
+    var Item = Model;
+}
+
+<h2>تفاصيل العملية</h2>
+
+<dl class="row">
+    <dt class="col-sm-2">المعرف</dt>
+    <dd class="col-sm-10">@Item.Id</dd>
+    <dt class="col-sm-2">الاسم</dt>
+    <dd class="col-sm-10">@Item.Name</dd>
+    <dt class="col-sm-2">التاريخ</dt>
+    <dd class="col-sm-10">@Item.Date.ToString("yyyy-MM-dd HH:mm")</dd>
+    <dt class="col-sm-2">تاريخ الإنشاء</dt>
+    <dd class="col-sm-10">@Item.CreationDate.ToString("yyyy-MM-dd HH:mm")</dd>
+    <dt class="col-sm-2">الجراح</dt>
+    <dd class="col-sm-10">@Item.Surgeon</dd>
+    <dt class="col-sm-2">المدة (دقائق)</dt>
+    <dd class="col-sm-10">@Item.Duration</dd>
+    <dt class="col-sm-2">الفريق الطبي</dt>
+    <dd class="col-sm-10">@Item.MedicalTeam</dd>
+    <dt class="col-sm-2">معرف المريض</dt>
+    <dd class="col-sm-10">@Item.PatientId</dd>
+    <dt class="col-sm-2">الملاحظات</dt>
+    <dd class="col-sm-10">@Item.Notes</dd>
+</dl>
+
+<div>
+    <a asp-action="Update" asp-route-id="@Item.Id" class="btn btn-warning">تعديل</a>
+    <a asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-danger">حذف</a>
+    <a asp-action="Index" class="btn btn-secondary">العودة للقائمة</a>
+</div>
