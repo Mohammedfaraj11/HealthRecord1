@@ -9,26 +9,19 @@ public class Vaccination
 
     [Required]
     [MaxLength(200)]
-    public string VaccineName { get; set; } = string.Empty; // Name of the vaccine administered
-
-    [Required]
-    public DateTime DateAdministered { get; set; } // Date when the vaccine was administered
-
-    public int? DoseNumber { get; set; } // Dose number in the vaccination series (e.g., 1st, 2nd, booster)
-
-    [MaxLength(50)]
-    public string? BatchNumber { get; set; } // Batch or lot number of the vaccine
+    public string VaccineName { get; set; } = string.Empty; // Name of the vaccine
 
     [MaxLength(100)]
     public string? Manufacturer { get; set; } // Manufacturer of the vaccine
 
-    public DateTime? NextDoseDate { get; set; } // Date for the next dose if applicable
+    public int StandardDoseCount { get; set; } // Standard number of doses required
 
     [MaxLength(500)]
-    public string? Notes { get; set; } // Additional notes about the vaccination
+    public string? Description { get; set; } // Description of the vaccine
+
+    public bool IsActive { get; set; } = true; // Whether the vaccine is currently active in the system
 
     // Navigation property: vaccination cards linking this patient to vaccination records
     public ICollection<VaccinationCard> VaccinationCards { get; set; } = new List<VaccinationCard>();
-
 
 }

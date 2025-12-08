@@ -5,7 +5,7 @@ namespace HealthRecord1.DAL.Entities;
 public class Operation
 {
     [Key]
-    public int Id { get; set; } // Unique identifier for the operation
+    public int id { get; set; } // Unique identifier for the operation
 
     [Required]
     [MaxLength(200)]

@@ -1,0 +1,25 @@
+@model HealthRecord1.BLL.Models.ChronicDiseaseVM
+
+@{
+    ViewBag.Title = "تحديث المرض المزمن";
+}
+
+<h2>تحديث المرض المزمن</h2>
+<p>@TempData["ErrorMessage"]</p>
+
+<form asp-action="Update" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <partial name="~/Views/Partials/ChronicDisease/CreateUpdate.cshtml" />
+    <button type="submit" class="btn btn-primary">تحديث</button>
+    <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
+</form>
+
+<div>
+    <a asp-action="Details" asp-route-id="@Model.Id">العودة إلى التفاصيل</a>
+</div>
+
+@section JqueryValidation {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+}

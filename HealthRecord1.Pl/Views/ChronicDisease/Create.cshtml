@@ -1,16 +1,14 @@
-@model HealthRecord1.BLL.Models.OperationVM
+@model HealthRecord1.BLL.Models.ChronicDiseaseVM
 
 @{
-    ViewBag.Title = "إضافة عملية";
-    var Item = Model;
+    ViewBag.Title = "إضافة مرض مزمن";
 }
 
-<h2>إضافة عملية جديدة</h2>
-<br /> <br/>
+<h2>إضافة مرض مزمن جديد</h2>
 <p>@TempData["ErrorMessage"]</p>
 
 <form asp-action="Create" method="post">
-    <partial name="~/Views/Partials/Operations/CreateUpdate.cshtml" />
+    <partial name="~/Views/Partials/ChronicDisease/CreateUpdate.cshtml" />
     <button type="submit" class="btn btn-primary">إضافة</button>
     <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
 </form>
@@ -18,5 +16,4 @@
 @section JqueryValidation {
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
-
 }

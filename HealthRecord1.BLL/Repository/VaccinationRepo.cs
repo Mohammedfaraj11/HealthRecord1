@@ -1,6 +1,8 @@
 using HealthRecord1.BLL.Interfaces;
 using HealthRecord1.BLL.Models;
 using HealthRecord1.DAL.Database;
+using HealthRecord1.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,29 +15,71 @@ namespace HealthRecord1.BLL.Repository
     {
         MyContext db = new MyContext();
 
-        public Task<VaccinationVM> CreateAsync(VaccinationVM vaccinationVM)
+        public async Task CreateAsync(VaccinationVM obj)
         {
-            throw new NotImplementedException();
+            Vaccination d = new Vaccination();
+            d.VaccineName = obj.VaccineName;
+            d.Manufacturer = obj.Manufacturer;
+            d.StandardDoseCount = obj.StandardDoseCount;
+            d.Description = obj.Description;
+            d.IsActive = obj.IsActive;
+            await db.Vaccinations.AddAsync(d);
+            await db.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var vaccination = await db.Vaccinations.FindAsync(id);
+            if (vaccination != null)
+            {
+                db.Vaccinations.Remove(vaccination);
+                await db.SaveChangesAsync();
+            }
         }
 
-        public Task<IEnumerable<VaccinationVM>> GetAllAsync()
+        public async Task<IEnumerable<VaccinationVM>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var data = await db.Vaccinations.Select(a => new VaccinationVM
+            {
+                Id = a.Id,
+                VaccineName = a.VaccineName,
+                Manufacturer = a.Manufacturer,
+                StandardDoseCount = a.StandardDoseCount,
+                Description = a.Description,
+                IsActive = a.IsActive
+            }).ToListAsync();
+
+            return data;
         }
 
-        public Task<VaccinationVM?> GetByIdAsync(int id)
+        public async Task<VaccinationVM?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var vaccination = await db.Vaccinations.FindAsync(id);
+            if (vaccination == null) return null;
+            return new VaccinationVM
+            {
+                Id = vaccination.Id,
+                VaccineName = vaccination.VaccineName,
+                Manufacturer = vaccination.Manufacturer,
+                StandardDoseCount = vaccination.StandardDoseCount,
+                Description = vaccination.Description,
+                IsActive = vaccination.IsActive
+            };
         }
 
-        public Task UpdateAsync(VaccinationVM vaccinationVM)
+        public async Task UpdateAsync(VaccinationVM vaccinationVM)
         {
-            throw new NotImplementedException();
+            var vaccination = await db.Vaccinations.FindAsync(vaccinationVM.Id);
+            if (vaccination != null)
+            {
+                vaccination.VaccineName = vaccinationVM.VaccineName;
+                vaccination.Manufacturer = vaccinationVM.Manufacturer;
+                vaccination.StandardDoseCount = vaccinationVM.StandardDoseCount;
+                vaccination.Description = vaccinationVM.Description;
+                vaccination.IsActive = vaccinationVM.IsActive;
+                await db.SaveChangesAsync();
+            }
         }
     }
 }
+

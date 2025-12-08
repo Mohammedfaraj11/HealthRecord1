@@ -1,0 +1,14 @@
+@model HealthRecord1.BLL.Models.ChronicDiseaseVM
+
+@{
+    ViewBag.Title = "تفاصيل المرض المزمن";
+}
+
+<h2>تفاصيل المرض المزمن</h2>
+
+<partial name="~/Views/Partials/ChronicDisease/DeleteDetails.cshtml" />
+
+<p>
+    <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-warning">تعديل</a> |
+    <a asp-action="Index" class="btn btn-secondary">العودة إلى القائمة</a>
+</p>

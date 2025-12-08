@@ -1,12 +1,12 @@
-@model HealthRecord1.BLL.Models.OperationVM
+@model HealthRecord1.BLL.Models.VaccinationVM
 
 @{
-    ViewBag.Title = "تفاصيل العملية";
+    ViewBag.Title = "تفاصيل التطعيم";
 }
 
-<h2>تفاصيل العملية</h2>
+<h2>تفاصيل التطعيم</h2>
 
-<partial name="~/Views/Partials/Operations/DeleteDetails.cshtml" />
+<partial name="~/Views/Partials/Vaccination/DeleteDetails.cshtml" />
 
 <div>
     <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-warning">تعديل</a>

@@ -1,35 +1,46 @@
-using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 using HealthRecord1.BLL.Interfaces;
 using HealthRecord1.BLL.Models;
 using HealthRecord1.BLL.Repository;
+using HealthRecord1.DAL.Entities;
+using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HealthRecord1.PL.Controllers
 {
     public class OperationController : Controller
     {
-        OperationRepo Operation = new OperationRepo();
+        private readonly IOperation Operation;
+        private readonly IMapper mapper;
+        public OperationController(IOperation O, IMapper mapper)
+        {
+            this.Operation = O;
+            this.mapper = mapper;
+        }
 
         public async Task<IActionResult> Index()
         {
             var data = await Operation.GetAllAsync();
-            return View(data);
+            var result = mapper.Map<IEnumerable<OperationVM>>(data);
+            return View(result);
         }
 
-        [HttpGet] // data (PL Operation VM) ==> BLL ==> DAL ==> cshtml
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost] // data (PL Operation VM) ==> BLL ==> DAL ==> cshtml
+        [HttpPost]
         public async Task<IActionResult> Create(OperationVM obj)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    obj.CreationDate = DateTime.Now;
-                    await Operation.CreateAsync(obj);
+                    var data = mapper.Map<Operation>(obj);
+                    await Operation.CreateAsync(data);
+                    TempData["SuccessMessage"] = "تم إضافة العملية الجراحية بنجاح!";
                     return RedirectToAction("Index");
                 }
                 TempData["ErrorMessage"] = "البيانات المدخلة غير صحيحة، يرجى التحقق والمحاولة مرة أخرى.";
@@ -37,59 +48,60 @@ namespace HealthRecord1.PL.Controllers
             }
             catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "حدث خطأ أثناء إنشاء العملية: " + ex.Message;
+                TempData["ErrorMessage"] = "حدث خطأ أثناء إنشاء العملية الجراحية: " + ex.Message;
                 return View(obj);
             }
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var operation = await Operation.GetByIdAsync(id);
-            if (operation == null)
-            {
-                return NotFound();
-            }
-            return View(operation);
+            var data = await Operation.GetByIdAsync(id);
+            var result = mapper.Map<OperationVM>(data);
+            return View(result);
         }
-
+        [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
-            var operation = await Operation.GetByIdAsync(id);
-            if (operation == null)
-            {
-                return NotFound();
-            }
-            return View(operation);
+
+            var data = await Operation.GetByIdAsync(id);
+            var result = mapper.Map<OperationVM>(data);
+            return View(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(OperationVM operationVM)
+        public async Task<IActionResult> Update(OperationVM obj)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid == true)
             {
-                await Operation.UpdateAsync(operationVM);
-                TempData["SuccessMessage"] = "تم تحديث العملية بنجاح!";
+                var data = mapper.Map<Operation>(obj);
+                await Operation.UpdateAsync(data);
+                TempData["SuccessMessage"] = "تم تحديث العملية الجراحية بنجاح!";
                 return RedirectToAction("Index");
             }
-            return View(operationVM);
+            return View(obj);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var operation = await Operation.GetByIdAsync(id);
-            if (operation == null)
-            {
-                return NotFound();
-            }
-            return View(operation);
+            var data = await Operation.GetByIdAsync(id);
+            var result = mapper.Map<OperationVM> (data);
+            return View(result);
         }
-
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost]
+        public async Task<IActionResult> Delete(OperationVM Obj )
         {
-            await Operation.DeleteAsync(id);
-            TempData["SuccessMessage"] = "تم حذف العملية بنجاح!";
-            return RedirectToAction("Index");
+            try
+            {
+                var data = mapper.Map<Operation>(Obj);
+                await Operation.DeleteAsync(data);
+                return RedirectToAction("index");
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = ex.Message;
+                return View(Obj);
+            }
         }
     }
 }

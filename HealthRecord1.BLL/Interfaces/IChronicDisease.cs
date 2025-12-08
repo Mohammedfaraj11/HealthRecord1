@@ -6,7 +6,8 @@ public interface IChronicDisease
 {
     Task<IEnumerable<ChronicDiseaseVM>> GetAllAsync();
     Task<ChronicDiseaseVM?> GetByIdAsync(int id);
-    Task<ChronicDiseaseVM> CreateAsync(ChronicDiseaseVM chronicDiseaseVM);
+    Task CreateAsync(ChronicDiseaseVM chronicDiseaseVM);
     Task UpdateAsync(ChronicDiseaseVM chronicDiseaseVM);
     Task DeleteAsync(int id);
+    Task<bool> IsICD10CodeUniqueAsync(string code, int? excludeId = null);
 }

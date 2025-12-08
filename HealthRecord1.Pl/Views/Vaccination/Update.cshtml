@@ -1,15 +1,14 @@
-@model HealthRecord1.BLL.Models.OperationVM
+@model HealthRecord1.BLL.Models.VaccinationVM
 
 @{
-    ViewBag.Title = "تعديل عملية";
-    var Item = Model;
+    ViewBag.Title = "تعديل تطعيم";
 }
 
-<h2>تعديل العملية</h2>
+<h2>تعديل التطعيم</h2>
 
 <form asp-action="Update" method="post">
     <input type="hidden" asp-for="Id" />
-    <partial name="~/Views/Partials/Operations/CreateUpdate.cshtml" />
+    <partial name="~/Views/Partials/Vaccination/CreateUpdate.cshtml" />
     <button type="submit" class="btn btn-primary">حفظ</button>
     <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
 </form>

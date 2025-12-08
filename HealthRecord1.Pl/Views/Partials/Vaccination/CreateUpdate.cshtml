@@ -1,0 +1,26 @@
+@model HealthRecord1.BLL.Models.VaccinationVM
+
+<div class="form-group">
+    <label asp-for="VaccineName">اسم اللقاح</label>
+    <input asp-for="VaccineName" class="form-control" required />
+    <span asp-validation-for="VaccineName" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Manufacturer">الشركة المصنعة</label>
+    <input asp-for="Manufacturer" class="form-control" />
+    <span asp-validation-for="Manufacturer" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="StandardDoseCount">عدد الجرعات القياسي</label>
+    <input asp-for="StandardDoseCount" type="number" class="form-control" />
+    <span asp-validation-for="StandardDoseCount" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Description">الوصف</label>
+    <textarea asp-for="Description" class="form-control"></textarea>
+    <span asp-validation-for="Description" class="text-danger"></span>
+</div>
+<div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" asp-for="IsActive" />
+    <label class="form-check-label" asp-for="IsActive">نشط</label>
+</div>

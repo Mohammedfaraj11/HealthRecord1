@@ -1,18 +1,18 @@
-@model HealthRecord1.BLL.Models.OperationVM
+@model HealthRecord1.BLL.Models.VaccinationVM
 
 @{
-    ViewBag.Title = "حذف عملية";
+    ViewBag.Title = "حذف تطعيم";
 }
 
-<h2>حذف العملية</h2>
+<h2>حذف التطعيم</h2>
 
-<h3>هل أنت متأكد من حذف هذه العملية؟</h3>
+<h3>هل أنت متأكد من حذف هذا التطعيم؟</h3>
 
 <div class="alert alert-warning">
     <strong>تحذير:</strong> هذا الإجراء لا يمكن التراجع عنه.
 </div>
 
-<partial name="~/Views/Partials/Operations/DeleteDetails.cshtml" />
+<partial name="~/Views/Partials/Vaccination/DeleteDetails.cshtml" />
 
 <form asp-action="Delete" method="post">
     <input type="hidden" asp-for="Id" />

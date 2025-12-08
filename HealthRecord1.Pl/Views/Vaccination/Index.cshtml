@@ -1,0 +1,41 @@
+@model IEnumerable<HealthRecord1.BLL.Models.VaccinationVM>
+
+@{
+    ViewBag.Title = "التطعيمات";
+}
+
+<h2>قائمة التطعيمات</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">إضافة تطعيم جديد</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>المعرف</th>
+            <th>اسم اللقاح</th>
+            <th>الشركة المصنعة</th>
+            <th>عدد الجرعات القياسي</th>
+            <th>نشط</th>
+            <th>الإجراءات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Item in Model)
+        {
+            <tr>
+                <td>@Item.Id</td>
+                <td>@Item.VaccineName</td>
+                <td>@Item.Manufacturer</td>
+                <td>@Item.StandardDoseCount</td>
+                <td>@(Item.IsActive ? "نعم" : "لا")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@Item.Id" class="btn btn-info btn-sm">التفاصيل</a>
+                    <a asp-action="Update" asp-route-id="@Item.Id" class="btn btn-warning btn-sm">تعديل</a>
+                    <a asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-danger btn-sm">حذف</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

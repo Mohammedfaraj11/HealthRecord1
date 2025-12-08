@@ -6,8 +6,6 @@ public class ChronicDiseaseVM
 
     public string Name { get; set; } = string.Empty; // Name of the chronic disease
 
-    public DateTime DiagnosisDate { get; set; } // Date of diagnosis
-
     public string? Description { get; set; } // Description of the disease
 
     public string? Notes { get; set; } // Additional notes

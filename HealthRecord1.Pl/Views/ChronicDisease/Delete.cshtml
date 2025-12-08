@@ -1,0 +1,15 @@
+@model HealthRecord1.BLL.Models.ChronicDiseaseVM
+
+@{
+    ViewBag.Title = "حذف المرض المزمن";
+}
+
+<h3>هل أنت متأكد من حذف هذا المرض المزمن؟</h3>
+
+<partial name="~/Views/Partials/ChronicDisease/DeleteDetails.cshtml" />
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">حذف</button>
+    <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
+</form>

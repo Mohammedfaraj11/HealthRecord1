@@ -1,0 +1,24 @@
+@model HealthRecord1.BLL.Models.ChronicDiseaseVM
+
+<div class="form-group">
+    <label asp-for="Name">الاسم</label>
+    <input asp-for="Name" class="form-control" required />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Description">الوصف</label>
+    <textarea asp-for="Description" class="form-control"></textarea>
+</div>
+<div class="form-group">
+    <label asp-for="Notes">الملاحظات</label>
+    <textarea asp-for="Notes" class="form-control"></textarea>
+</div>
+<div class="form-group">
+    <label asp-for="SeverityScale">مستوى الخطورة (1-10)</label>
+    <input asp-for="SeverityScale" type="number" min="1" max="10" class="form-control" required />
+    <span asp-validation-for="SeverityScale" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="ICD10Code">رمز ICD-10</label>
+    <input asp-for="ICD10Code" class="form-control" />
+</div>

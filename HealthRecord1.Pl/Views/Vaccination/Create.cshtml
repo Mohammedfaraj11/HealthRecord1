@@ -1,16 +1,15 @@
-@model HealthRecord1.BLL.Models.OperationVM
+@model HealthRecord1.BLL.Models.VaccinationVM
 
 @{
-    ViewBag.Title = "إضافة عملية";
-    var Item = Model;
+    ViewBag.Title = "إضافة تطعيم";
 }
 
-<h2>إضافة عملية جديدة</h2>
+<h2>إضافة تطعيم جديد</h2>
 <br /> <br/>
 <p>@TempData["ErrorMessage"]</p>
 
 <form asp-action="Create" method="post">
-    <partial name="~/Views/Partials/Operations/CreateUpdate.cshtml" />
+    <partial name="~/Views/Partials/Vaccination/CreateUpdate.cshtml" />
     <button type="submit" class="btn btn-primary">إضافة</button>
     <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
 </form>
@@ -18,5 +17,4 @@
 @section JqueryValidation {
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
-
 }
