@@ -13,72 +13,42 @@ namespace HealthRecord1.BLL.Repository
 {
     public class VaccinationRepo : IVaccination
     {
-        MyContext db = new MyContext();
+        private readonly MyContext db;
 
-        public async Task CreateAsync(VaccinationVM obj)
+        public VaccinationRepo(MyContext db)
         {
-            Vaccination d = new Vaccination();
-            d.VaccineName = obj.VaccineName;
-            d.Manufacturer = obj.Manufacturer;
-            d.StandardDoseCount = obj.StandardDoseCount;
-            d.Description = obj.Description;
-            d.IsActive = obj.IsActive;
-            await db.Vaccinations.AddAsync(d);
+            this.db = db;
+        }
+        public async Task CreateAsync(Vaccination obj)
+        {
+
+            await db.Vaccinations.AddAsync(obj);
             await db.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Vaccination obj)
         {
-            var vaccination = await db.Vaccinations.FindAsync(id);
-            if (vaccination != null)
-            {
-                db.Vaccinations.Remove(vaccination);
-                await db.SaveChangesAsync();
-            }
+            db.Entry(obj).State = EntityState.Deleted;
+            await db.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<VaccinationVM>> GetAllAsync()
+        public async Task<IEnumerable<Vaccination>> GetAllAsync()
         {
-            var data = await db.Vaccinations.Select(a => new VaccinationVM
-            {
-                Id = a.Id,
-                VaccineName = a.VaccineName,
-                Manufacturer = a.Manufacturer,
-                StandardDoseCount = a.StandardDoseCount,
-                Description = a.Description,
-                IsActive = a.IsActive
-            }).ToListAsync();
+            var data = await db.Vaccinations.ToListAsync();
 
             return data;
         }
 
-        public async Task<VaccinationVM?> GetByIdAsync(int id)
+        public async Task<Vaccination> GetByIdAsync(int id)
         {
-            var vaccination = await db.Vaccinations.FindAsync(id);
-            if (vaccination == null) return null;
-            return new VaccinationVM
-            {
-                Id = vaccination.Id,
-                VaccineName = vaccination.VaccineName,
-                Manufacturer = vaccination.Manufacturer,
-                StandardDoseCount = vaccination.StandardDoseCount,
-                Description = vaccination.Description,
-                IsActive = vaccination.IsActive
-            };
+            var data = await db.Vaccinations.Where(a => a.Id == id).FirstOrDefaultAsync();
+            return data;
         }
 
-        public async Task UpdateAsync(VaccinationVM vaccinationVM)
+        public async Task UpdateAsync(Vaccination obj)
         {
-            var vaccination = await db.Vaccinations.FindAsync(vaccinationVM.Id);
-            if (vaccination != null)
-            {
-                vaccination.VaccineName = vaccinationVM.VaccineName;
-                vaccination.Manufacturer = vaccinationVM.Manufacturer;
-                vaccination.StandardDoseCount = vaccinationVM.StandardDoseCount;
-                vaccination.Description = vaccinationVM.Description;
-                vaccination.IsActive = vaccinationVM.IsActive;
-                await db.SaveChangesAsync();
-            }
+            db.Entry(obj).State = EntityState.Modified;
+            await db.SaveChangesAsync();
         }
     }
 }

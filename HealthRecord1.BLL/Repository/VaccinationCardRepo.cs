@@ -11,7 +11,13 @@ namespace HealthRecord1.BLL.Repository
 {
     public class VaccinationCardRepo : IVaccinationCard
     {
-        MyContext db = new MyContext();
+        private readonly MyContext db;
+
+        public VaccinationCardRepo(MyContext db)
+        {
+            this.db = db;
+        }
+
 
         public Task<VaccinationCardVM> CreateAsync(VaccinationCardVM vaccinationCardVM)
         {

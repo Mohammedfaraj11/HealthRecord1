@@ -11,7 +11,12 @@ namespace HealthRecord1.BLL.Repository
 {
     public class ChronicDiseaseCardRepo : IChronicDiseaseCard
     {
-        MyContext db = new MyContext();
+        private readonly MyContext db;
+
+        public ChronicDiseaseCardRepo(MyContext db)
+        {
+            this.db = db;
+        }
 
         public Task<ChronicDiseaseCardVM> CreateAsync(ChronicDiseaseCardVM chronicDiseaseCardVM)
         {

@@ -1,12 +1,13 @@
 using HealthRecord1.BLL.Models;
+using HealthRecord1.DAL.Entities;
 
 namespace HealthRecord1.BLL.Interfaces;
 
 public interface IVaccination
 {
-    Task<IEnumerable<VaccinationVM>> GetAllAsync();
-    Task<VaccinationVM?> GetByIdAsync(int id);
-    Task CreateAsync(VaccinationVM vaccinationVM);
-    Task UpdateAsync(VaccinationVM vaccinationVM);
-    Task DeleteAsync(int id);
+    Task<IEnumerable<Vaccination>> GetAllAsync();
+    Task<Vaccination> GetByIdAsync(int id);
+    Task CreateAsync(Vaccination obj);
+    Task UpdateAsync(Vaccination obj);
+    Task DeleteAsync(Vaccination obj);
 }

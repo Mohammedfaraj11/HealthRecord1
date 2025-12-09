@@ -8,7 +8,12 @@ namespace HealthRecord1.BLL.Repository
 {
     public class PatientRepo : IPatient
     {
-        MyContext db = new MyContext();
+        private readonly MyContext db;
+
+        public PatientRepo(MyContext db)
+        {
+            this.db = db;
+        }
 
         public async Task<PatientVM> CreateAsync(PatientVM patientVM)
         {

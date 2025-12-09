@@ -8,7 +8,14 @@ namespace HealthRecord1.BLL.Repository
 {
     public class OperationRepo : IOperation
     {
-        MyContext db = new MyContext();
+        private readonly MyContext db;
+
+        public OperationRepo(MyContext db)
+        { 
+        this.db = db;
+        }
+
+
 
         public async Task CreateAsync(Operation obj)
         {

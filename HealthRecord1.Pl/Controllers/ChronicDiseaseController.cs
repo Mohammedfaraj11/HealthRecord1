@@ -1,20 +1,30 @@
-using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 using HealthRecord1.BLL.Interfaces;
 using HealthRecord1.BLL.Models;
 using HealthRecord1.BLL.Repository;
+using HealthRecord1.DAL.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HealthRecord1.PL.Controllers
 {
     public class ChronicDiseaseController : Controller
     {
-        ChronicDiseaseRepo ChronicDisease = new ChronicDiseaseRepo();
+        private readonly IChronicDisease ChronicDisease;
+        private readonly IMapper mapper;
+        public ChronicDiseaseController(IChronicDisease O, IMapper mapper)
+        {
+            this.ChronicDisease = O;
+            this.mapper = mapper;
+        }
 
         public async Task<IActionResult> Index()
         {
             var data = await ChronicDisease.GetAllAsync();
-            return View(data);
+            var result = mapper.Map<IEnumerable<ChronicDiseaseVM>>(data);
+            return View(result);
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -27,12 +37,8 @@ namespace HealthRecord1.PL.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (!string.IsNullOrEmpty(obj.ICD10Code) && !await ChronicDisease.IsICD10CodeUniqueAsync(obj.ICD10Code))
-                    {
-                        TempData["ErrorMessage"] = "رمز ICD-10 موجود بالفعل، يرجى التأكد من ان المرض المزمن موجود .";
-                        return View(obj);
-                    }
-                    await ChronicDisease.CreateAsync(obj);
+                    var data = mapper.Map<ChronicDisease>(obj);
+                    await ChronicDisease.CreateAsync(data);
                     TempData["SuccessMessage"] = "تم إضافة المرض المزمن بنجاح!";
                     return RedirectToAction("Index");
                 }
@@ -48,57 +54,53 @@ namespace HealthRecord1.PL.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var chronicDisease = await ChronicDisease.GetByIdAsync(id);
-            if (chronicDisease == null)
-            {
-                return NotFound();
-            }
-            return View(chronicDisease);
+            var data = await ChronicDisease.GetByIdAsync(id);
+            var result = mapper.Map<ChronicDiseaseVM>(data);
+            return View(result);
         }
-
+        [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
-            var chronicDisease = await ChronicDisease.GetByIdAsync(id);
-            if (chronicDisease == null)
-            {
-                return NotFound();
-            }
-            return View(chronicDisease);
+
+            var data = await ChronicDisease.GetByIdAsync(id);
+            var result = mapper.Map<ChronicDiseaseVM>(data);
+            return View(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(ChronicDiseaseVM chronicDiseaseVM)
+        public async Task<IActionResult> Update(ChronicDiseaseVM obj)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid == true)
             {
-                if (!string.IsNullOrEmpty(chronicDiseaseVM.ICD10Code) && !await ChronicDisease.IsICD10CodeUniqueAsync(chronicDiseaseVM.ICD10Code, chronicDiseaseVM.Id))
-                {
-                    TempData["ErrorMessage"] = "رمز ICD-10 موجود بالفعل، يرجى استخدام رمز آخر.";
-                    return View(chronicDiseaseVM);
-                }
-                await ChronicDisease.UpdateAsync(chronicDiseaseVM);
+                var data = mapper.Map<ChronicDisease>(obj);
+                await ChronicDisease.UpdateAsync(data);
                 TempData["SuccessMessage"] = "تم تحديث المرض المزمن بنجاح!";
                 return RedirectToAction("Index");
             }
-            return View(chronicDiseaseVM);
+            return View(obj);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var chronicDisease = await ChronicDisease.GetByIdAsync(id);
-            if (chronicDisease == null)
-            {
-                return NotFound();
-            }
-            return View(chronicDisease);
+            var data = await ChronicDisease.GetByIdAsync(id);
+            var result = mapper.Map<ChronicDiseaseVM>(data);
+            return View(result);
         }
-
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost]
+        public async Task<IActionResult> Delete(ChronicDiseaseVM Obj)
         {
-            await ChronicDisease.DeleteAsync(id);
-            TempData["SuccessMessage"] = "تم حذف المرض المزمن بنجاح!";
-            return RedirectToAction("Index");
+            try
+            {
+                var data = mapper.Map<ChronicDisease>(Obj);
+                await ChronicDisease.DeleteAsync(data);
+                return RedirectToAction("index");
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = ex.Message;
+                return View(Obj);
+            }
         }
     }
 }

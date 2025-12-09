@@ -8,81 +8,43 @@ namespace HealthRecord1.BLL.Repository
 {
     public class ChronicDiseaseRepo : IChronicDisease
     {
-        MyContext db = new MyContext();
+        private readonly MyContext db;
 
-        public async Task CreateAsync(ChronicDiseaseVM chronicDiseaseVM)
+        public ChronicDiseaseRepo(MyContext db)
         {
-            ChronicDisease cd = new ChronicDisease();
-            cd.Name = chronicDiseaseVM.Name;
-            cd.Description = chronicDiseaseVM.Description;
-            cd.Notes = chronicDiseaseVM.Notes;
-            cd.SeverityScale = chronicDiseaseVM.SeverityScale;
-            cd.IsActive = chronicDiseaseVM.IsActive;
-            cd.ICD10Code = chronicDiseaseVM.ICD10Code;
-            await db.ChronicDiseases.AddAsync(cd);
+            this.db = db;
+        }
+
+        public async Task CreateAsync(ChronicDisease obj)
+        {
+
+            await db.ChronicDiseases.AddAsync(obj);
             await db.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(ChronicDisease obj)
         {
-            var chronicDisease = await db.ChronicDiseases.FindAsync(id);
-            if (chronicDisease != null)
-            {
-                db.ChronicDiseases.Remove(chronicDisease);
-                await db.SaveChangesAsync();
-            }
+            db.Entry(obj).State = EntityState.Deleted;
+            await db.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<ChronicDiseaseVM>> GetAllAsync()
+        public async Task<IEnumerable<ChronicDisease>> GetAllAsync()
         {
-            var data = await db.ChronicDiseases.Select(a => new ChronicDiseaseVM
-            {
-                Id = a.Id,
-                Name = a.Name,
-                Description = a.Description,
-                Notes = a.Notes,
-                SeverityScale = a.SeverityScale,
-                IsActive = a.IsActive,
-                ICD10Code = a.ICD10Code
-            }).ToListAsync();
+            var data = await db.ChronicDiseases.ToListAsync();
 
             return data;
         }
 
-        public async Task<ChronicDiseaseVM?> GetByIdAsync(int id)
+        public async Task<ChronicDisease> GetByIdAsync(int id)
         {
-            var chronicDisease = await db.ChronicDiseases.FindAsync(id);
-            if (chronicDisease == null) return null;
-            return new ChronicDiseaseVM
-            {
-                Id = chronicDisease.Id,
-                Name = chronicDisease.Name,
-                Description = chronicDisease.Description,
-                Notes = chronicDisease.Notes,
-                SeverityScale = chronicDisease.SeverityScale,
-                IsActive = chronicDisease.IsActive,
-                ICD10Code = chronicDisease.ICD10Code
-            };
+            var data = await db.ChronicDiseases.Where(a => a.Id == id).FirstOrDefaultAsync();
+            return data;
         }
 
-        public async Task UpdateAsync(ChronicDiseaseVM chronicDiseaseVM)
+        public async Task UpdateAsync(ChronicDisease obj)
         {
-            var chronicDisease = await db.ChronicDiseases.FindAsync(chronicDiseaseVM.Id);
-            if (chronicDisease != null)
-            {
-                chronicDisease.Name = chronicDiseaseVM.Name;
-                chronicDisease.Description = chronicDiseaseVM.Description;
-                chronicDisease.Notes = chronicDiseaseVM.Notes;
-                chronicDisease.SeverityScale = chronicDiseaseVM.SeverityScale;
-                chronicDisease.IsActive = chronicDiseaseVM.IsActive;
-                chronicDisease.ICD10Code = chronicDiseaseVM.ICD10Code;
-                await db.SaveChangesAsync();
-            }
-        }
-
-        public async Task<bool> IsICD10CodeUniqueAsync(string code, int? excludeId = null)
-        {
-            return !await db.ChronicDiseases.AnyAsync(c => c.ICD10Code == code && (excludeId == null || c.Id != excludeId));
+            db.Entry(obj).State = EntityState.Modified;
+            await db.SaveChangesAsync();
         }
     }
 }

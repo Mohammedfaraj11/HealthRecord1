@@ -15,8 +15,18 @@ namespace HealthRecord1.BLL.Mapper
         {
             // Operation(Entity)  ==> OperationVM
             CreateMap<Operation,OperationVM>();
-            // Operation(Entity) ==> Operation(Entity)
+            // OperationVM ==> Operation(Entity)
             CreateMap<OperationVM, Operation>();
+
+            // Vaccination(Entity)  ==> VaccinationVM
+            CreateMap<Vaccination, VaccinationVM>();
+            // VaccinationVM==> Vaccination(Entity)
+            CreateMap<VaccinationVM, Vaccination>();
+
+            // ChronicDisease(Entity)  ==> ChronicDiseaseVM
+            CreateMap<ChronicDisease, ChronicDiseaseVM>();
+            // ChronicDiseaseVM ==> ChronicDisease(Entity)
+            CreateMap<ChronicDiseaseVM, ChronicDisease>();
         }
     }
 }

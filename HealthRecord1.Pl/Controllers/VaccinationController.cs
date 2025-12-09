@@ -1,18 +1,27 @@
-using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 using HealthRecord1.BLL.Interfaces;
 using HealthRecord1.BLL.Models;
 using HealthRecord1.BLL.Repository;
+using HealthRecord1.DAL.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HealthRecord1.PL.Controllers
 {
     public class VaccinationController : Controller
     {
-        VaccinationRepo Vaccination = new VaccinationRepo();
+        private readonly IVaccination Vaccination;
+        private readonly IMapper mapper;
+        public VaccinationController(IVaccination O, IMapper mapper)
+        {
+            this.Vaccination = O;
+            this.mapper = mapper;
+        }
 
         public async Task<IActionResult> Index()
         {
             var data = await Vaccination.GetAllAsync();
-            return View(data);
+            var result = mapper.Map<IEnumerable<VaccinationVM>>(data);
+            return View(result);
         }
 
         [HttpGet]
@@ -28,7 +37,9 @@ namespace HealthRecord1.PL.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    await Vaccination.CreateAsync(obj);
+                    var data = mapper.Map<Vaccination>(obj);
+                    await Vaccination.CreateAsync(data);
+                    TempData["SuccessMessage"] = "تم إضافة التطعيم بنجاح!";
                     return RedirectToAction("Index");
                 }
                 TempData["ErrorMessage"] = "البيانات المدخلة غير صحيحة، يرجى التحقق والمحاولة مرة أخرى.";
@@ -43,52 +54,53 @@ namespace HealthRecord1.PL.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var vaccination = await Vaccination.GetByIdAsync(id);
-            if (vaccination == null)
-            {
-                return NotFound();
-            }
-            return View(vaccination);
+            var data = await Vaccination.GetByIdAsync(id);
+            var result = mapper.Map<VaccinationVM>(data);
+            return View(result);
         }
-
+        [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
-            var vaccination = await Vaccination.GetByIdAsync(id);
-            if (vaccination == null)
-            {
-                return NotFound();
-            }
-            return View(vaccination);
+
+            var data = await Vaccination.GetByIdAsync(id);
+            var result = mapper.Map<VaccinationVM>(data);
+            return View(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(VaccinationVM vaccinationVM)
+        public async Task<IActionResult> Update(VaccinationVM obj)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid == true)
             {
-                await Vaccination.UpdateAsync(vaccinationVM);
+                var data = mapper.Map<Vaccination>(obj);
+                await Vaccination.UpdateAsync(data);
                 TempData["SuccessMessage"] = "تم تحديث التطعيم بنجاح!";
                 return RedirectToAction("Index");
             }
-            return View(vaccinationVM);
+            return View(obj);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var vaccination = await Vaccination.GetByIdAsync(id);
-            if (vaccination == null)
-            {
-                return NotFound();
-            }
-            return View(vaccination);
+            var data = await Vaccination.GetByIdAsync(id);
+            var result = mapper.Map<VaccinationVM>(data);
+            return View(result);
         }
-
-        [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost]
+        public async Task<IActionResult> Delete(VaccinationVM Obj)
         {
-            await Vaccination.DeleteAsync(id);
-            TempData["SuccessMessage"] = "تم حذف التطعيم بنجاح!";
-            return RedirectToAction("Index");
+            try
+            {
+                var data = mapper.Map<Vaccination>(Obj);
+                await Vaccination.DeleteAsync(data);
+                return RedirectToAction("index");
+            }
+            catch (Exception ex)
+            {
+                TempData["Message"] = ex.Message;
+                return View(Obj);
+            }
         }
     }
 }

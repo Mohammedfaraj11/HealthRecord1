@@ -6,6 +6,15 @@ namespace HealthRecord1.DAL.Database;
 public class MyContext : DbContext
 {
 
+    public MyContext(DbContextOptions<MyContext> opt) : base(opt)
+    { }
+
+
+
+
+
+
+
     // DbSet properties expose entity collections for EF Core
     public DbSet<Patient> Patients { get; set; } = null!;
     public DbSet<ChronicDisease> ChronicDiseases { get; set; } = null!;
@@ -14,11 +23,6 @@ public class MyContext : DbContext
     public DbSet<Vaccination> Vaccinations { get; set; } = null!;
     public DbSet<VaccinationCard> VaccinationCards { get; set; } = null!;
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Server=.;Database=HealthRecord1Db;Trusted_Connection=True;TrustServerCertificate=True;");
-    }
-    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

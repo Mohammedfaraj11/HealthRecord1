@@ -8,6 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
+// Conection String
+var connectionString = builder.Configuration.GetConnectionString("workshopConnection");
+
+builder.Services.AddDbContext<MyContext>(options=>options.UseSqlServer(connectionString));
+
+
 // Auto mapper
 builder.Services.AddAutoMapper(x => x.AddProfile(new DomainProfile()));
 
@@ -20,6 +26,11 @@ builder.Services.AddScoped<IOperation, OperationRepo>();
 // Scoped : One Object for Operation
 //builder.Services.AddSingleton<IOperation, OperationRepo>();
 
+// Transient : One Object for Vaccination
+builder.Services.AddScoped<IVaccination, VaccinationRepo>();
+
+// Transient : One Object for ChronicDisease
+builder.Services.AddScoped<IChronicDisease, ChronicDiseaseRepo>();
 
 // Add DbContext configuration
 builder.Services.AddDbContext<MyContext>();
