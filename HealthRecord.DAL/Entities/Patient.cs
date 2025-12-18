@@ -9,6 +9,11 @@ public class Patient
     public int Id { get; set; } // Unique identifier for the patient
 
     [Required]
+    [StringLength(12, MinimumLength = 12, ErrorMessage = "الرقم الوطني يجب أن يتكون من 12 رقم")]
+    [RegularExpression(@"^\d{12}$", ErrorMessage = "الرقم الوطني يجب أن يحتوي على أرقام فقط")]
+    public string NationalId { get; set; } = string.Empty; // Patient's National ID (12 digits, unique)
+
+    [Required]
     [MaxLength(100)]
     public string FirstName { get; set; } = string.Empty; // Patient's first name
 
@@ -53,6 +58,11 @@ public class Patient
 
     [Required]
     public bool IsActive { get; set; } // Indicates if the patient record is active
+
+    [Required]
+    public bool IsDeleted { get; set; } // Indicates if the patient record is soft-deleted
+
+    public string? ImageName { get; set; } // Patient's profile image filename (optional)
 
     // Navigation property: chronic disease cards linking this patient to chronic diseases
     public ICollection<ChronicDiseaseCard> ChronicDiseaseCards { get; set; } = new List<ChronicDiseaseCard>();

@@ -1,36 +1,102 @@
 @model HealthRecord1.BLL.Models.OperationVM
 
-<div class="form-group">
-    <label asp-for="Name">الاسم</label>
-    <input asp-for="Name" class="form-control" required />
-    <span asp-validation-for="Name" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="Date">التاريخ</label>
-    <input asp-for="Date" type="datetime-local" class="form-control" required />
-    <span asp-validation-for="Date" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="Notes">الملاحظات</label>
-    <textarea asp-for="Notes" class="form-control"></textarea>
-</div>
-<div class="form-group">
-    <label asp-for="Duration">المدة (دقائق)</label>
-    <input asp-for="Duration" type="number" class="form-control" required />
-    <span asp-validation-for="Duration" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="Surgeon">الجراح</label>
-    <input asp-for="Surgeon" class="form-control" required />
-    <span asp-validation-for="Surgeon" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="MedicalTeam">الفريق الطبي</label>
-    <input asp-for="MedicalTeam" class="form-control" required />
-    <span asp-validation-for="MedicalTeam" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="PatientId">معرف المريض</label>
-    <input asp-for="PatientId" type="number" class="form-control" required />
-    <span asp-validation-for="PatientId" class="text-danger"></span>
+<div class="row g-4">
+    <!-- معلومات العملية الأساسية -->
+    <div class="col-12">
+        <h5 class="border-bottom pb-2 mb-3">
+            <i class="fas fa-info-circle text-primary me-2"></i>
+            معلومات العملية الأساسية
+        </h5>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="Name" class="form-control" id="name" placeholder="اسم العملية" required />
+            <label for="name">
+                <i class="fas fa-signature text-primary me-1"></i> اسم العملية
+            </label>
+            <span asp-validation-for="Name" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="Date" type="datetime-local" class="form-control" id="date" 
+                   placeholder="التاريخ والوقت" required />
+            <label for="date">
+                <i class="fas fa-calendar-alt text-success me-1"></i> التاريخ والوقت
+            </label>
+            <span asp-validation-for="Date" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="Duration" type="number" class="form-control" id="duration" 
+                   placeholder="المدة (دقائق)" required min="1" />
+            <label for="duration">
+                <i class="fas fa-clock text-warning me-1"></i> المدة (دقائق)
+            </label>
+            <span asp-validation-for="Duration" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="PatientId" type="number" class="form-control" id="patientId" 
+                   placeholder="معرف المريض" required min="1" />
+            <label for="patientId">
+                <i class="fas fa-user text-info me-1"></i> معرف المريض
+            </label>
+            <span asp-validation-for="PatientId" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <!-- الطاقم الطبي -->
+    <div class="col-12 mt-4">
+        <h5 class="border-bottom pb-2 mb-3">
+            <i class="fas fa-user-md text-success me-2"></i>
+            الطاقم الطبي
+        </h5>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="Surgeon" class="form-control" id="surgeon" placeholder="الجراح" required />
+            <label for="surgeon">
+                <i class="fas fa-user-md text-primary me-1"></i> الجراح
+            </label>
+            <span asp-validation-for="Surgeon" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="MedicalTeam" class="form-control" id="medicalTeam" 
+                   placeholder="الفريق الطبي" required />
+            <label for="medicalTeam">
+                <i class="fas fa-users text-success me-1"></i> الفريق الطبي
+            </label>
+            <span asp-validation-for="MedicalTeam" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <!-- ملاحظات -->
+    <div class="col-12 mt-4">
+        <h5 class="border-bottom pb-2 mb-3">
+            <i class="fas fa-sticky-note text-warning me-2"></i>
+            ملاحظات إضافية
+        </h5>
+    </div>
+
+    <div class="col-12">
+        <div class="form-floating mb-3">
+            <textarea asp-for="Notes" class="form-control" id="notes" 
+                      placeholder="ملاحظات" style="height: 120px"></textarea>
+            <label for="notes">
+                <i class="fas fa-file-medical text-secondary me-1"></i> ملاحظات حول العملية
+            </label>
+            <span asp-validation-for="Notes" class="text-danger small"></span>
+        </div>
+    </div>
 </div>

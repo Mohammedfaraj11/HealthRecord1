@@ -4,18 +4,94 @@
     ViewBag.Title = "حذف تطعيم";
 }
 
-<h2>حذف التطعيم</h2>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body bg-gradient-danger text-white py-4">
+                    <div class="d-flex align-items-center">
+                        <div class="icon-circle me-3">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div>
+                            <h3 class="mb-1">حذف التطعيم</h3>
+                            <p class="mb-0 opacity-75">تأكيد عملية الحذف</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<h3>هل أنت متأكد من حذف هذا التطعيم؟</h3>
+            <div class="alert alert-danger border-0 shadow-sm d-flex align-items-center mb-4" role="alert">
+                <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+                <div>
+                    <h5 class="alert-heading mb-1">تحذير!</h5>
+                    <p class="mb-0">هل أنت متأكد من حذف هذا التطعيم؟ هذا الإجراء لا يمكن التراجع عنه.</p>
+                </div>
+            </div>
 
-<div class="alert alert-warning">
-    <strong>تحذير:</strong> هذا الإجراء لا يمكن التراجع عنه.
+            <partial name="~/Views/Partials/Vaccination/DeleteDetails.cshtml" />
+
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-body p-4">
+                    <form asp-action="Delete" method="post">
+                        <input asp-for="Id" type="hidden" />
+                        <input asp-for="VaccineName" type="hidden" />
+                        <input asp-for="Manufacturer" type="hidden" />
+                        <input asp-for="StandardDoseCount" type="hidden" />
+                        <input asp-for="Description" type="hidden" />
+                        <input asp-for="IsActive" type="hidden" />
+                        
+                        <div class="d-flex gap-2 justify-content-end">
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-times me-2"></i>
+                                إلغاء
+                            </a>
+                            <button type="submit" class="btn btn-danger btn-lg">
+                                <i class="fas fa-trash me-2"></i>
+                                تأكيد الحذف
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<partial name="~/Views/Partials/Vaccination/DeleteDetails.cshtml" />
+<style>
+    .bg-gradient-danger {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    }
 
-<form asp-action="Delete" method="post">
-    <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">حذف</button>
-    <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
-</form>
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+
+    .btn {
+        border-radius: 8px;
+        padding: 12px 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .alert {
+        border-radius: 12px;
+    }
+</style>

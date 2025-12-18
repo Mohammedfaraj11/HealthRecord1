@@ -1,0 +1,338 @@
+@model HealthRecord1.BLL.Models.PatientVM
+
+<div class="row g-4">
+    <!-- المعلومات الأساسية -->
+    <div class="col-12">
+        <h5 class="border-bottom pb-2 mb-3">
+            <i class="fas fa-user-circle text-primary me-2"></i>
+            المعلومات الأساسية
+        </h5>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="NationalId" class="form-control" id="nationalId" placeholder="الرقم الوطني" 
+                   required maxlength="12" pattern="\d{12}" />
+            <label for="nationalId">
+                <i class="fas fa-id-card text-primary me-1"></i> الرقم الوطني
+            </label>
+            <span asp-validation-for="NationalId" class="text-danger small"></span>
+            <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                يجب أن يتكون من 12 رقم بالضبط
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <select asp-for="BloodType" class="form-select" id="bloodType" required>
+                <option value="">اختر فصيلة الدم</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+            </select>
+            <label for="bloodType">
+                <i class="fas fa-tint text-danger me-1"></i> فصيلة الدم
+            </label>
+            <span asp-validation-for="BloodType" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="FirstName" class="form-control" id="firstName" placeholder="الاسم الأول" required />
+            <label for="firstName">
+                <i class="fas fa-signature text-primary me-1"></i> الاسم الأول
+            </label>
+            <span asp-validation-for="FirstName" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="LastName" class="form-control" id="lastName" placeholder="اسم العائلة" required />
+            <label for="lastName">
+                <i class="fas fa-signature text-primary me-1"></i> اسم العائلة
+            </label>
+            <span asp-validation-for="LastName" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="DateOfBirth" type="date" class="form-control" id="dateOfBirth" 
+                   placeholder="تاريخ الميلاد" required />
+            <label for="dateOfBirth">
+                <i class="fas fa-calendar-alt text-success me-1"></i> تاريخ الميلاد
+            </label>
+            <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
+        </div>
+    </div>
+
+    </div>
+
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label class="form-label d-block mb-3">
+                <i class="fas fa-venus-mars text-info me-1"></i>
+                <strong>الجنس</strong>
+                <span class="text-danger">*</span>
+            </label>
+            
+            <div class="d-flex gap-3">
+                <div class="form-check gender-option">
+                    <input class="form-check-input" 
+                           type="radio" 
+                           asp-for="Gender" 
+                           value="Male" 
+                           id="genderMale"
+                           required />
+                    <label class="form-check-label gender-label" for="genderMale">
+                        <i class="fas fa-mars text-primary me-2"></i>
+                        <strong>ذكر</strong>
+                    </label>
+                </div>
+                
+                <div class="form-check gender-option">
+                    <input class="form-check-input" 
+                           type="radio" 
+                           asp-for="Gender" 
+                           value="Female" 
+                           id="genderFemale"
+                           required />
+                    <label class="form-check-label gender-label" for="genderFemale">
+                        <i class="fas fa-venus text-danger me-2"></i>
+                        <strong>أنثى</strong>
+                    </label>
+                </div>
+            </div>
+            
+            <span asp-validation-for="Gender" class="text-danger small"></span>
+        </div>
+    </div>
+
+
+    <!-- صورة المريض -->
+    <div class="col-12 mt-4">
+        <h5 class="border-bottom pb-2 mb-3">
+            <i class="fas fa-camera text-info me-2"></i>
+            صورة المريض
+        </h5>
+    </div>
+
+    <div class="col-12">
+        <div class="card border-0 bg-light p-3">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center">
+                    <div class="image-preview-container mb-3">
+                        @if (!string.IsNullOrEmpty(Model.ImageName))
+                        {
+                            @if (Model.ImageName == "default-avatar.svg")
+                            {
+                                <img id="imagePreview" 
+                                     src="~/images/default-avatar.svg" 
+                                     alt="Default Avatar" 
+                                     class="img-thumbnail rounded-circle"
+                                     style="width: 150px; height: 150px; object-fit: cover; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" />
+                            }
+                            else
+                            {
+                                <img id="imagePreview" 
+                                     src="~/PatientImages/@Model.ImageName" 
+                                     alt="Patient Photo" 
+                                     class="img-thumbnail rounded-circle" 
+                                     style="width: 150px; height: 150px; object-fit: cover;" />
+                            }
+                        }
+                        else
+                        {
+                            <img id="imagePreview" 
+                                 src="~/images/default-avatar.svg" 
+                                 alt="Default Avatar" 
+                                 class="img-thumbnail rounded-circle"
+                                 style="width: 150px; height: 150px; object-fit: cover; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" />
+                        }
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.ImageName))
+                    {
+                        <small class="text-muted d-block">
+                            <i class="fas fa-image me-1"></i>
+                            الصورة الحالية
+                        </small>
+                    }
+                </div>
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label for="imageFile" class="form-label">
+                            <i class="fas fa-upload text-primary me-1"></i>
+                            اختر صورة جديدة
+                        </label>
+                        <input type="file" 
+                               name="Image" 
+                               id="imageFile" 
+                               class="form-control" 
+                               accept="image/*"
+                               onchange="previewImage(event)" />
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            يفضل أن تكون الصورة بصيغة JPG أو PNG، بحجم لا يتجاوز 5 ميجابايت
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- معلومات الاتصال -->
+    <div class="col-12 mt-4">
+        <h5 class="border-bottom pb-2 mb-3">
+            <i class="fas fa-address-book text-success me-2"></i>
+            معلومات الاتصال
+        </h5>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="PhoneNumber" type="tel" class="form-control" id="phoneNumber" 
+                   placeholder="رقم الهاتف" />
+            <label for="phoneNumber">
+                <i class="fas fa-phone text-success me-1"></i> رقم الهاتف
+            </label>
+            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="PhoneNumber2" type="tel" class="form-control" id="phoneNumber2" 
+                   placeholder="رقم الهاتف الثاني" />
+            <label for="phoneNumber2">
+                <i class="fas fa-mobile-alt text-success me-1"></i> رقم الهاتف الثاني
+            </label>
+            <span asp-validation-for="PhoneNumber2" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="Email" type="email" class="form-control" id="email" 
+                   placeholder="البريد الإلكتروني" />
+            <label for="email">
+                <i class="fas fa-envelope text-info me-1"></i> البريد الإلكتروني
+            </label>
+            <span asp-validation-for="Email" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="Address" class="form-control" id="address" placeholder="العنوان" />
+            <label for="address">
+                <i class="fas fa-map-marker-alt text-danger me-1"></i> العنوان
+            </label>
+            <span asp-validation-for="Address" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <!-- المعلومات الطبية -->
+    <div class="col-12 mt-4">
+        <h5 class="border-bottom pb-2 mb-3">
+            <i class="fas fa-notes-medical text-danger me-2"></i>
+            المعلومات الطبية
+        </h5>
+    </div>
+
+    <div class="col-12">
+        <div class="form-floating mb-3">
+            <textarea asp-for="MedicalHistory" class="form-control" id="medicalHistory" 
+                      placeholder="التاريخ الطبي" style="height: 100px"></textarea>
+            <label for="medicalHistory">
+                <i class="fas fa-file-medical text-primary me-1"></i> التاريخ الطبي
+            </label>
+            <span asp-validation-for="MedicalHistory" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="form-floating mb-3">
+            <textarea asp-for="Allergies" class="form-control" id="allergies" 
+                      placeholder="الحساسية" style="height: 80px"></textarea>
+            <label for="allergies">
+                <i class="fas fa-allergies text-warning me-1"></i> الحساسية
+            </label>
+            <span asp-validation-for="Allergies" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="form-floating mb-3">
+            <textarea asp-for="Notes" class="form-control" id="notes" 
+                      placeholder="ملاحظات" style="height: 80px"></textarea>
+            <label for="notes">
+                <i class="fas fa-sticky-note text-secondary me-1"></i> ملاحظات
+            </label>
+            <span asp-validation-for="Notes" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <!-- حالة النشاط -->
+    <div class="col-12 mt-3">
+        <div class="form-check form-switch">
+            <input asp-for="IsActive" type="checkbox" class="form-check-input" id="isActive" 
+                   style="width: 3em; height: 1.5em;" />
+            <label for="isActive" class="form-check-label ms-2" style="font-size: 1.1em;">
+                <i class="fas fa-toggle-on text-success me-1"></i>
+                <strong>نشط</strong>
+            </label>
+        </div>
+    </div>
+</div>
+
+<script>
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('imagePreview');
+        
+        if (file) {
+            // التحقق من نوع الملف
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('يرجى اختيار صورة بصيغة JPG أو PNG أو GIF فقط');
+                event.target.value = '';
+                return;
+            }
+            
+            // التحقق من حجم الملف (5MB)
+            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+            if (file.size > maxSize) {
+                alert('حجم الصورة يجب ألا يتجاوز 5 ميجابايت');
+                event.target.value = '';
+                return;
+            }
+            
+            // عرض الصورة
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // إنشاء عنصر img جديد إذا كان preview div
+                if (preview.tagName === 'DIV') {
+                    const newImg = document.createElement('img');
+                    newImg.id = 'imagePreview';
+                    newImg.className = 'img-thumbnail rounded-circle';
+                    newImg.style.cssText = 'width: 150px; height: 150px; object-fit: cover;';
+                    newImg.alt = 'Patient Photo Preview';
+                    preview.parentNode.replaceChild(newImg, preview);
+                    newImg.src = e.target.result;
+                } else {
+                    preview.src = e.target.result;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>

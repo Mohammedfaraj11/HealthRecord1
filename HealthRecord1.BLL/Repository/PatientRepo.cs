@@ -3,6 +3,7 @@ using HealthRecord1.BLL.Models;
 using HealthRecord1.DAL.Database;
 using HealthRecord1.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace HealthRecord1.BLL.Repository
 {
@@ -11,114 +12,54 @@ namespace HealthRecord1.BLL.Repository
         private readonly MyContext db;
 
         public PatientRepo(MyContext db)
-        {
+        { 
             this.db = db;
         }
 
-        public async Task<PatientVM> CreateAsync(PatientVM patientVM)
+        public async Task CreateAsync(Patient obj)
         {
-            Patient p = new Patient
-            {
-                FirstName = patientVM.FirstName,
-                LastName = patientVM.LastName,
-                DateOfBirth = patientVM.DateOfBirth,
-                Gender = patientVM.Gender,
-                PhoneNumber = patientVM.PhoneNumber,
-                Email = patientVM.Email,
-                Address = patientVM.Address,
-                CreationDate = patientVM.CreationDate,
-                BloodType = patientVM.BloodType,
-                MedicalHistory = patientVM.MedicalHistory,
-                Allergies = patientVM.Allergies,
-                Notes = patientVM.Notes,
-                PhoneNumber2 = patientVM.PhoneNumber2,
-                IsActive = patientVM.IsActive
-            };
-            await db.Patients.AddAsync(p);
+            await db.Patients.AddAsync(obj);
             await db.SaveChangesAsync();
-            patientVM.Id = p.Id;
-            return patientVM;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Patient obj)
         {
-            var patient = await db.Patients.FindAsync(id);
+            // Soft Delete: Mark as deleted instead of removing from database
+            var patient = await db.Patients.IgnoreQueryFilters().FirstOrDefaultAsync(p => p.Id == obj.Id);
             if (patient != null)
             {
-                db.Patients.Remove(patient);
+                patient.IsDeleted = true;
+                db.Entry(patient).State = EntityState.Modified;
                 await db.SaveChangesAsync();
             }
         }
 
-        public async Task<IEnumerable<PatientVM>> GetAllAsync()
+        public async Task<IEnumerable<Patient>> GetAllAsync(Expression<Func<Patient, bool>> filter = null)
         {
-            var data = await db.Patients.Select(a => new PatientVM
-            {
-                Id = a.Id,
-                FirstName = a.FirstName,
-                LastName = a.LastName,
-                DateOfBirth = a.DateOfBirth,
-                Gender = a.Gender,
-                PhoneNumber = a.PhoneNumber,
-                Email = a.Email,
-                Address = a.Address,
-                CreationDate = a.CreationDate,
-                BloodType = a.BloodType,
-                MedicalHistory = a.MedicalHistory,
-                Allergies = a.Allergies,
-                Notes = a.Notes,
-                PhoneNumber2 = a.PhoneNumber2,
-                IsActive = a.IsActive
-            }).ToListAsync();
-
-            return data;
+            if (filter == null)
+                return await db.Patients.ToListAsync();
+            else  
+                return await db.Patients.Where(filter).ToListAsync();
+           
         }
 
-        public async Task<PatientVM?> GetByIdAsync(int id)
+        public async Task<Patient> GetByIdAsync(int id, Expression<Func<Patient, bool>> filter = null)
         {
-            var patient = await db.Patients.FindAsync(id);
-            if (patient == null) return null;
-            return new PatientVM
-            {
-                Id = patient.Id,
-                FirstName = patient.FirstName,
-                LastName = patient.LastName,
-                DateOfBirth = patient.DateOfBirth,
-                Gender = patient.Gender,
-                PhoneNumber = patient.PhoneNumber,
-                Email = patient.Email,
-                Address = patient.Address,
-                CreationDate = patient.CreationDate,
-                BloodType = patient.BloodType,
-                MedicalHistory = patient.MedicalHistory,
-                Allergies = patient.Allergies,
-                Notes = patient.Notes,
-                PhoneNumber2 = patient.PhoneNumber2,
-                IsActive = patient.IsActive
-            };
-        }
+            IQueryable<Patient> query = db.Patients.Where(p => p.Id == id);
 
-        public async Task UpdateAsync(PatientVM patientVM)
-        {
-            var patient = await db.Patients.FindAsync(patientVM.Id);
-            if (patient != null)
+            if (filter != null)
             {
-                patient.FirstName = patientVM.FirstName;
-                patient.LastName = patientVM.LastName;
-                patient.DateOfBirth = patientVM.DateOfBirth;
-                patient.Gender = patientVM.Gender;
-                patient.PhoneNumber = patientVM.PhoneNumber;
-                patient.Email = patientVM.Email;
-                patient.Address = patientVM.Address;
-                patient.CreationDate = patientVM.CreationDate;
-                patient.BloodType = patientVM.BloodType;
-                patient.MedicalHistory = patientVM.MedicalHistory;
-                patient.Allergies = patientVM.Allergies;
-                patient.Notes = patientVM.Notes;
-                patient.PhoneNumber2 = patientVM.PhoneNumber2;
-                patient.IsActive = patientVM.IsActive;
-                await db.SaveChangesAsync();
+                query = query.Where(filter);
             }
+
+            var patient = await query.FirstOrDefaultAsync();
+            return patient;
+        }
+
+        public async Task UpdateAsync(Patient obj)
+        {
+            db.Entry(obj).State = EntityState.Modified;
+            await db.SaveChangesAsync();
         }
     }
 }

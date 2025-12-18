@@ -1,24 +1,106 @@
 @model HealthRecord1.BLL.Models.ChronicDiseaseVM
 
-<div class="form-group">
-    <label asp-for="Name">الاسم</label>
-    <input asp-for="Name" class="form-control" required />
-    <span asp-validation-for="Name" class="text-danger"></span>
+<div class="row g-4">
+    <div class="col-12">
+        <h5 class="border-bottom pb-2 mb-3">
+            <i class="fas fa-disease text-success me-2"></i>
+            معلومات المرض المزمن
+        </h5>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="Name" class="form-control" id="name" placeholder="اسم المرض" required />
+            <label for="name">
+                <i class="fas fa-signature text-success me-1"></i> اسم المرض
+            </label>
+            <span asp-validation-for="Name" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3">
+            <input asp-for="ICD10Code" class="form-control" id="icd10Code" placeholder="كود ICD-10" />
+            <label for="icd10Code">
+                <i class="fas fa-code text-info me-1"></i> كود ICD-10
+            </label>
+            <span asp-validation-for="ICD10Code" class="text-danger small"></span>
+            <div class="form-text">
+                <i class="fas fa-info-circle me-1"></i>
+                رمز التصنيف الدولي للأمراض (اختياري)
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label for="severityScale" class="form-label">
+                <i class="fas fa-thermometer-half text-warning me-1"></i>
+                مستوى الخطورة: <strong id="severityValue">@(Model?.SeverityScale ?? 5)</strong> / 10
+            </label>
+            <input asp-for="SeverityScale" type="range" class="form-range" id="severityScale" 
+                   min="1" max="10" step="1" required value="@(Model?.SeverityScale ?? 5)"
+                   oninput="document.getElementById('severityValue').textContent = this.value; updateSeverityColor(this.value)" />
+            <div class="d-flex justify-content-between">
+                <small class="text-success">منخفض</small>
+                <small class="text-warning">متوسط</small>
+                <small class="text-danger">عالي</small>
+            </div>
+            <span asp-validation-for="SeverityScale" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-check form-switch mt-4">
+            <input asp-for="IsActive" type="checkbox" class="form-check-input" id="isActive" 
+                   style="width: 3em; height: 1.5em;" />
+            <label for="isActive" class="form-check-label ms-2" style="font-size: 1.1em;">
+                <i class="fas fa-toggle-on text-success me-1"></i>
+                <strong>نشط</strong>
+            </label>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="form-floating mb-3">
+            <textarea asp-for="Description" class="form-control" id="description" 
+                      placeholder="الوصف" style="height: 100px"></textarea>
+            <label for="description">
+                <i class="fas fa-file-medical text-primary me-1"></i> وصف المرض
+            </label>
+            <span asp-validation-for="Description" class="text-danger small"></span>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="form-floating mb-3">
+            <textarea asp-for="Notes" class="form-control" id="notes" 
+                      placeholder="ملاحظات" style="height: 100px"></textarea>
+            <label for="notes">
+                <i class="fas fa-sticky-note text-secondary me-1"></i> ملاحظات إضافية
+            </label>
+            <span asp-validation-for="Notes" class="text-danger small"></span>
+        </div>
+    </div>
 </div>
-<div class="form-group">
-    <label asp-for="Description">الوصف</label>
-    <textarea asp-for="Description" class="form-control"></textarea>
-</div>
-<div class="form-group">
-    <label asp-for="Notes">الملاحظات</label>
-    <textarea asp-for="Notes" class="form-control"></textarea>
-</div>
-<div class="form-group">
-    <label asp-for="SeverityScale">مستوى الخطورة (1-10)</label>
-    <input asp-for="SeverityScale" type="number" min="1" max="10" class="form-control" required />
-    <span asp-validation-for="SeverityScale" class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="ICD10Code">رمز ICD-10</label>
-    <input asp-for="ICD10Code" class="form-control" />
-</div>
+
+<script>
+    function updateSeverityColor(value) {
+        const severityValue = document.getElementById('severityValue');
+        if (value <= 3) {
+            severityValue.className = 'text-success';
+        } else if (value <= 6) {
+            severityValue.className = 'text-warning';
+        } else {
+            severityValue.className = 'text-danger';
+        }
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const slider = document.getElementById('severityScale');
+        if (slider) {
+            updateSeverityColor(slider.value);
+        }
+    });
+</script>

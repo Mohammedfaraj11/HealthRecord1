@@ -1,41 +1,176 @@
 @model IEnumerable<HealthRecord1.BLL.Models.OperationVM>
 
 @{
-    ViewBag.Title = "العمليات";
+    ViewBag.Title = "العمليات الجراحية";
 }
 
-<h2>قائمة العمليات</h2>
+<div class="container-fluid py-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm bg-gradient-primary text-white">
+                <div class="card-body py-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h2 class="mb-1">
+                                <i class="fas fa-procedures me-2"></i>
+                                إدارة العمليات الجراحية
+                            </h2>
+                            <p class="mb-0 opacity-75">عرض وإدارة سجلات العمليات الجراحية</p>
+                        </div>
+                        <a asp-action="Create" class="btn btn-light btn-lg shadow-sm">
+                            <i class="fas fa-plus-circle me-2"></i>
+                            إضافة عملية جديدة
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">إضافة عملية جديدة</a>
-</p>
+    <!-- Alert Messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>المعرف</th>
-            <th>الاسم</th>
-            <th>التاريخ</th>
-            <th>الجراح</th>
-            <th>المدة (دقائق)</th>
-            <th>الإجراءات</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var Item in Model)
-        {
-            <tr>
-                <td>@Item.Id</td>
-                <td>@Item.Name</td>
-                <td>@Item.Date.ToShortDateString()</td>
-                <td>@Item.Surgeon</td>
-                <td>@Item.Duration</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@Item.Id" class="btn btn-info btn-sm">التفاصيل</a>
-                    <a asp-action="Update" asp-route-id="@Item.Id" class="btn btn-warning btn-sm">تعديل</a>
-                    <a asp-action="Delete" asp-route-id="@Item.Id" class="btn btn-danger btn-sm">حذف</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <!-- Operations Table Card -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-list me-2 text-primary"></i>
+                            قائمة العمليات الجراحية
+                        </h5>
+                        <span class="badge bg-primary rounded-pill">@Model.Count() عملية</span>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="px-4"><i class="fas fa-hashtag me-1"></i> المعرف</th>
+                                    <th><i class="fas fa-signature me-1"></i> اسم العملية</th>
+                                    <th><i class="fas fa-calendar-day me-1"></i> التاريخ</th>
+                                    <th><i class="fas fa-user-md me-1"></i> الجراح</th>
+                                    <th><i class="fas fa-clock me-1"></i> المدة</th>
+                                    <th><i class="fas fa-users me-1"></i> الفريق الطبي</th>
+                                    <th class="text-center px-4"><i class="fas fa-cog me-1"></i> الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var Item in Model)
+                                {
+                                    <tr>
+                                        <td class="px-4 fw-bold text-primary">#@Item.Id</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="operation-icon me-2">
+                                                    <i class="fas fa-scalpel"></i>
+                                                </div>
+                                                <strong>@Item.Name</strong>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <i class="fas fa-calendar text-info me-1"></i>
+                                            @Item.Date.ToString("yyyy-MM-dd")
+                                            <br>
+                                            <small class="text-muted">
+                                                <i class="far fa-clock me-1"></i>
+                                                @Item.Date.ToString("HH:mm")
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info">
+                                                <i class="fas fa-user-md me-1"></i>
+                                                @Item.Surgeon
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="far fa-clock me-1"></i>
+                                                @Item.Duration دقيقة
+                                            </span>
+                                        </td>
+                                        <td>@Item.MedicalTeam</td>
+                                        <td class="px-4">
+                                            <div class="btn-group" role="group">
+                                                <a asp-action="Details" asp-route-id="@Item.Id" 
+                                                   class="btn btn-sm btn-info text-white" 
+                                                   data-bs-toggle="tooltip" title="التفاصيل">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a asp-action="Update" asp-route-id="@Item.Id" 
+                                                   class="btn btn-sm btn-warning text-white" 
+                                                   data-bs-toggle="tooltip" title="تعديل">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <a asp-action="Delete" asp-route-id="@Item.Id" 
+                                                   class="btn btn-sm btn-danger" 
+                                                   data-bs-toggle="tooltip" title="حذف">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .operation-icon {
+        width: 35px;
+        height: 35px;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 14px;
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8f9fa;
+        transform: translateX(-2px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .btn-group .btn {
+        transition: all 0.3s ease;
+    }
+
+    .btn-group .btn:hover {
+        transform: translateY(-2px);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    });
+</script>

@@ -1,22 +1,156 @@
 @model HealthRecord1.BLL.Models.OperationVM
 
-<dl class="row">
-    <dt class="col-sm-2">المعرف</dt>
-    <dd class="col-sm-10">@Model.Id</dd>
-    <dt class="col-sm-2">الاسم</dt>
-    <dd class="col-sm-10">@Model.Name</dd>
-    <dt class="col-sm-2">التاريخ</dt>
-    <dd class="col-sm-10">@Model.Date.ToString("yyyy-MM-dd HH:mm")</dd>
-    <dt class="col-sm-2">تاريخ الإنشاء</dt>
-    <dd class="col-sm-10">@Model.CreationDate.ToString("yyyy-MM-dd HH:mm")</dd>
-    <dt class="col-sm-2">الجراح</dt>
-    <dd class="col-sm-10">@Model.Surgeon</dd>
-    <dt class="col-sm-2">المدة (دقائق)</dt>
-    <dd class="col-sm-10">@Model.Duration</dd>
-    <dt class="col-sm-2">الفريق الطبي</dt>
-    <dd class="col-sm-10">@Model.MedicalTeam</dd>
-    <dt class="col-sm-2">معرف المريض</dt>
-    <dd class="col-sm-10">@Model.PatientId</dd>
-    <dt class="col-sm-2">الملاحظات</dt>
-    <dd class="col-sm-10">@Model.Notes</dd>
-</dl>
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <!-- Operation Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex align-items-center p-3 bg-light rounded-3">
+                    <div class="operation-avatar me-3">
+                        <i class="fas fa-procedures"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-1">@Model.Name</h4>
+                        <span class="badge bg-primary">#@Model.Id</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Operation Details -->
+        <div class="row g-3">
+            <!-- المعلومات الأساسية -->
+            <div class="col-12">
+                <h5 class="text-primary border-bottom pb-2 mb-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    معلومات العملية
+                </h5>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-hashtag"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">المعرف</small>
+                        <p class="mb-0 fw-bold">#@Model.Id</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-info">
+                        <i class="fas fa-signature"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">اسم العملية</small>
+                        <p class="mb-0 fw-bold">@Model.Name</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-success">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">تاريخ العملية</small>
+                        <p class="mb-0 fw-bold">@Model.Date.ToString("yyyy-MM-dd HH:mm")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-secondary">
+                        <i class="fas fa-calendar-plus"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">تاريخ الإنشاء</small>
+                        <p class="mb-0 fw-bold">@Model.CreationDate.ToString("yyyy-MM-dd HH:mm")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-warning">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">مدة العملية</small>
+                        <p class="mb-0 fw-bold">@Model.Duration دقيقة</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-info">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">معرف المريض</small>
+                        <p class="mb-0 fw-bold">#@Model.PatientId</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الطاقم الطبي -->
+            <div class="col-12 mt-4">
+                <h5 class="text-success border-bottom pb-2 mb-3">
+                    <i class="fas fa-user-md me-2"></i>
+                    الطاقم الطبي
+                </h5>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-primary">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">الجراح</small>
+                        <p class="mb-0 fw-bold">@Model.Surgeon</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-success">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">الفريق الطبي</small>
+                        <p class="mb-0 fw-bold">@Model.MedicalTeam</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ملاحظات -->
+            @if (!string.IsNullOrEmpty(Model.Notes))
+            {
+                <div class="col-12 mt-4">
+                    <h5 class="text-warning border-bottom pb-2 mb-3">
+                        <i class="fas fa-sticky-note me-2"></i>
+                        ملاحظات
+                    </h5>
+                </div>
+
+                <div class="col-12">
+                    <div class="alert alert-light border-start border-warning border-4">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-file-medical text-warning me-2"></i>
+                            ملاحظات العملية
+                        </h6>
+                        <p class="mb-0">@Model.Notes</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

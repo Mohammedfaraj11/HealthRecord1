@@ -18,6 +18,11 @@ namespace HealthRecord1.BLL.Mapper
             // OperationVM ==> Operation(Entity)
             CreateMap<OperationVM, Operation>();
 
+            // Patient(Entity)  => PatientVM
+            CreateMap<Patient, PatientVM>();
+            // PatientVM => Patient(Entity)
+            CreateMap<PatientVM, Patient>();
+
             // Vaccination(Entity)  ==> VaccinationVM
             CreateMap<Vaccination, VaccinationVM>();
             // VaccinationVM==> Vaccination(Entity)

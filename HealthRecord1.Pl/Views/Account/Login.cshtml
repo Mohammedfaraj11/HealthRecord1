@@ -1,0 +1,117 @@
+@model HealthRecord1.BLL.Models.LoginVM
+
+@{
+    ViewBag.Title = "تسجيل الدخول";
+}
+
+<div class="container account-page py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+            <!-- Header Card -->
+            <div class="text-center mb-4">
+                <div class="login-icon mb-3">
+                    <i class="fas fa-sign-in-alt"></i>
+                </div>
+                <h2 class="fw-bold text-primary">تسجيل الدخول</h2>
+                <p class="text-muted">مرحباً بك مجدداً! سجل دخولك للمتابعة</p>
+            </div>
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <!-- Login Form Card -->
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-4">
+                    <form asp-action="Login" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
+
+                        <!-- Username/Email Field -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Email" class="form-control" id="usernameOrEmail" 
+                                   placeholder="اسم المستخدم أو البريد الإلكتروني" autofocus />
+                            <label for="usernameOrEmail">
+                                <i class="fas fa-user text-primary me-1"></i>
+                                اسم المستخدم أو البريد الإلكتروني
+                            </label>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Password Field -->
+                        <div class="form-floating mb-3">
+                            <input asp-for="Password" type="password" class="form-control" id="password" 
+                                   placeholder="كلمة المرور" />
+                            <label for="password">
+                                <i class="fas fa-lock text-warning me-1"></i>
+                                كلمة المرور
+                            </label>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <!-- Remember Me & Forgot Password -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input asp-for="RememberMe" type="checkbox" class="form-check-input" id="rememberMe" />
+                                <label class="form-check-label" for="rememberMe">
+                                    تذكرني
+                                </label>
+                            </div>
+                            <a href="#" class="text-primary small">نسيت كلمة المرور؟</a>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                تسجيل الدخول
+                            </button>
+                        </div>
+
+                        <!-- Divider -->
+                        <div class="text-center my-3">
+                            <span class="text-muted">أو</span>
+                        </div>
+
+                        <!-- Register Link -->
+                        <div class="text-center">
+                            <p class="text-muted mb-2">
+                                ليس لديك حساب؟
+                            </p>
+                            <a asp-action="Registration" class="btn btn-outline-primary">
+                                <i class="fas fa-user-plus me-2"></i>
+                                إنشاء حساب جديد
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Additional Links -->
+            <div class="text-center mt-4">
+                <a asp-controller="Home" asp-action="Index" class="text-muted">
+                    <i class="fas fa-arrow-right me-1"></i>
+                    العودة للصفحة الرئيسية
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section JqueryValidation {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+}

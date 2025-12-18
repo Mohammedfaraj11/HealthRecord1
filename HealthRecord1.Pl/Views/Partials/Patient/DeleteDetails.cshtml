@@ -1,0 +1,239 @@
+@model HealthRecord1.BLL.Models.PatientVM
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <!-- Patient Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex align-items-center p-3 bg-light rounded-3">
+                    <div class="patient-photo-container me-3">
+                        @if (!string.IsNullOrEmpty(Model.ImageName))
+                        {
+                            @if (Model.ImageName == "default-avatar.svg")
+                            {
+                                <img src="~/images/default-avatar.svg" 
+                                     alt="Default Avatar" 
+                                     class="patient-photo"
+                                     style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" />
+                            }
+                            else
+                            {
+                                <img src="~/PatientImages/@Model.ImageName" 
+                                     alt="@Model.FirstName @Model.LastName" 
+                                     class="patient-photo" />
+                            }
+                        }
+                        else
+                        {
+                            <img src="~/images/default-avatar.svg" 
+                                 alt="Default Avatar" 
+                                 class="patient-photo"
+                                 style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" />
+                        }
+                    </div>
+                    <div class="flex-grow-1">
+                        <h4 class="mb-1">@Model.FirstName @Model.LastName</h4>
+                        <div class="mb-2">
+                            <span class="badge bg-info me-1">
+                                <i class="fas fa-id-card me-1"></i>
+                                @Model.NationalId
+                            </span>
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge bg-success me-1">
+                                    <i class="fas fa-check-circle me-1"></i> نشط
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary me-1">
+                                    <i class="fas fa-times-circle me-1"></i> غير نشط
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Patient Details -->
+        <div class="row g-3">
+            <!-- المعلومات الأساسية -->
+            <div class="col-12">
+                <h5 class="text-primary border-bottom pb-2 mb-3">
+                    <i class="fas fa-user-circle me-2"></i>
+                    المعلومات الأساسية
+                </h5>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-hashtag"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">المعرف</small>
+                        <p class="mb-0 fw-bold">#@Model.Id</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-info">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">الرقم الوطني</small>
+                        <p class="mb-0 fw-bold">@Model.NationalId</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-success">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">تاريخ الميلاد</small>
+                        <p class="mb-0 fw-bold">@Model.DateOfBirth.ToString("yyyy-MM-dd")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon @(Model.Gender == "Male" ? "bg-primary" : "bg-danger")">
+                        <i class="fas fa-@(Model.Gender == "Male" ? "mars" : "venus")"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">الجنس</small>
+                        <p class="mb-0 fw-bold">@(Model.Gender == "Male" ? "ذكر" : Model.Gender == "Female" ? "أنثى" : Model.Gender)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-danger">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">فصيلة الدم</small>
+                        <p class="mb-0 fw-bold">@(Model.BloodType ?? "غير محدد")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-secondary">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">تاريخ التسجيل</small>
+                        <p class="mb-0 fw-bold">@Model.CreationDate.ToString("yyyy-MM-dd HH:mm")</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- معلومات الاتصال -->
+            <div class="col-12 mt-4">
+                <h5 class="text-success border-bottom pb-2 mb-3">
+                    <i class="fas fa-address-book me-2"></i>
+                    معلومات الاتصال
+                </h5>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-success">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">رقم الهاتف</small>
+                        <p class="mb-0 fw-bold">@(Model.PhoneNumber ?? "غير محدد")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-success">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">رقم الهاتف الثاني</small>
+                        <p class="mb-0 fw-bold">@(Model.PhoneNumber2 ?? "غير محدد")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-info">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">البريد الإلكتروني</small>
+                        <p class="mb-0 fw-bold">@(Model.Email ?? "غير محدد")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-danger">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">العنوان</small>
+                        <p class="mb-0 fw-bold">@(Model.Address ?? "غير محدد")</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المعلومات الطبية -->
+            <div class="col-12 mt-4">
+                <h5 class="text-danger border-bottom pb-2 mb-3">
+                    <i class="fas fa-notes-medical me-2"></i>
+                    المعلومات الطبية
+                </h5>
+            </div>
+
+            <div class="col-12">
+                <div class="alert alert-light border-start border-primary border-4">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-file-medical text-primary me-2"></i>
+                        التاريخ الطبي
+                    </h6>
+                    <p class="mb-0">@(Model.MedicalHistory ?? "لا توجد معلومات")</p>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="alert alert-light border-start border-warning border-4">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-allergies text-warning me-2"></i>
+                        الحساسية
+                    </h6>
+                    <p class="mb-0">@(Model.Allergies ?? "لا توجد معلومات")</p>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Notes))
+            {
+                <div class="col-12">
+                    <div class="alert alert-light border-start border-secondary border-4">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-sticky-note text-secondary me-2"></i>
+                            ملاحظات
+                        </h6>
+                        <p class="mb-0">@Model.Notes</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -4,12 +4,73 @@
     ViewBag.Title = "تفاصيل التطعيم";
 }
 
-<h2>تفاصيل التطعيم</h2>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body text-white py-4" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <div class="d-flex align-items-center">
+                        <div class="icon-circle me-3">
+                            <i class="fas fa-syringe"></i>
+                        </div>
+                        <div>
+                            <h3 class="mb-1">تفاصيل التطعيم</h3>
+                            <p class="mb-0 opacity-75">عرض كامل المعلومات</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<partial name="~/Views/Partials/Vaccination/DeleteDetails.cshtml" />
+            <partial name="~/Views/Partials/Vaccination/DeleteDetails.cshtml" />
 
-<div>
-    <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-warning">تعديل</a>
-    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">حذف</a>
-    <a asp-action="Index" class="btn btn-secondary">العودة للقائمة</a>
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-body p-4">
+                    <div class="d-flex gap-2 justify-content-end">
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-arrow-right me-2"></i>
+                            العودة للقائمة
+                        </a>
+                        <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-warning btn-lg text-white">
+                            <i class="fas fa-edit me-2"></i>
+                            تعديل
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger btn-lg">
+                            <i class="fas fa-trash me-2"></i>
+                            حذف
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+
+    .btn {
+        border-radius: 8px;
+        padding: 12px 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+</style>

@@ -1,9 +1,11 @@
 using HealthRecord1.DAL.Entities;
+using HealthRecord1.DAL.Extends;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace HealthRecord1.DAL.Database;
 
-public class MyContext : DbContext
+public class MyContext : IdentityDbContext <ApplicationUser>
 {
 
     public MyContext(DbContextOptions<MyContext> opt) : base(opt)
@@ -27,6 +29,17 @@ public class MyContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        // Configure unique index for Patient's NationalId
+        modelBuilder.Entity<Patient>(entity =>
+        {
+            entity.HasIndex(p => p.NationalId)
+                  .IsUnique()
+                  .HasDatabaseName("IX_Patient_NationalId");
+
+            // Global query filter to exclude soft-deleted patients
+            entity.HasQueryFilter(p => !p.IsDeleted);
+        });
 
         // Configure relationships / constraints for the ChronicDiseaseCard join entity
         modelBuilder.Entity<ChronicDiseaseCard>(entity =>

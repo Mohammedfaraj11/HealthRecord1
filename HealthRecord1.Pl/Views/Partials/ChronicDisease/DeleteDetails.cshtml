@@ -1,13 +1,125 @@
 @model HealthRecord1.BLL.Models.ChronicDiseaseVM
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">@Model.Name</h5>
-        <p class="card-text"><strong>اسم المرض:</strong> @Model.Name</p>
-        <p class="card-text"><strong>الوصف:</strong> @Model.Description</p>
-        <p class="card-text"><strong>الملاحظات:</strong> @Model.Notes</p>
-        <p class="card-text"><strong>مستوى الخطورة:</strong> @Model.SeverityScale / 10</p>
-        <p class="card-text"><strong>الحالة:</strong> @(Model.IsActive ? "نشط" : "غير نشط")</p>
-        <p class="card-text"><strong>رمز ICD-10:</strong> @Model.ICD10Code</p>
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex align-items-center p-3 bg-light rounded-3">
+                    <div class="disease-avatar me-3">
+                        <i class="fas fa-disease"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-1">@Model.Name</h4>
+                        <span class="badge bg-success">#@Model.Id</span>
+                        @if (Model.IsActive)
+                        {
+                            <span class="badge bg-success me-1">
+                                <i class="fas fa-check-circle me-1"></i> نشط
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary me-1">
+                                <i class="fas fa-times-circle me-1"></i> غير نشط
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-12">
+                <h5 class="text-success border-bottom pb-2 mb-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    معلومات المرض المزمن
+                </h5>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-hashtag"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">المعرف</small>
+                        <p class="mb-0 fw-bold">#@Model.Id</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-success">
+                        <i class="fas fa-disease"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">اسم المرض</small>
+                        <p class="mb-0 fw-bold">@Model.Name</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    <div class="info-icon bg-info">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">كود ICD-10</small>
+                        <p class="mb-0 fw-bold">@(Model.ICD10Code ?? "غير محدد")</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="info-item">
+                    @{
+                        var severityClass = Model.SeverityScale <= 3 ? "success" : 
+                                           Model.SeverityScale <= 6 ? "warning" : "danger";
+                    }
+                    <div class="info-icon bg-@severityClass">
+                        <i class="fas fa-thermometer-half"></i>
+                    </div>
+                    <div class="info-content">
+                        <small class="text-muted">مستوى الخطورة</small>
+                        <p class="mb-0 fw-bold">@Model.SeverityScale / 10</p>
+                    </div>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Description))
+            {
+                <div class="col-12 mt-4">
+                    <h5 class="text-primary border-bottom pb-2 mb-3">
+                        <i class="fas fa-file-medical me-2"></i>
+                        الوصف
+                    </h5>
+                </div>
+
+                <div class="col-12">
+                    <div class="alert alert-light border-start border-primary border-4">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-file-alt text-primary me-2"></i>
+                            وصف المرض
+                        </h6>
+                        <p class="mb-0">@Model.Description</p>
+                    </div>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.Notes))
+            {
+                <div class="col-12">
+                    <div class="alert alert-light border-start border-secondary border-4">
+                        <h6 class="alert-heading">
+                            <i class="fas fa-sticky-note text-secondary me-2"></i>
+                            ملاحظات
+                        </h6>
+                        <p class="mb-0">@Model.Notes</p>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>

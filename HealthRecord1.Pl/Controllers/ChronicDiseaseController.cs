@@ -3,10 +3,12 @@ using HealthRecord1.BLL.Interfaces;
 using HealthRecord1.BLL.Models;
 using HealthRecord1.BLL.Repository;
 using HealthRecord1.DAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthRecord1.PL.Controllers
 {
+    [Authorize]
     public class ChronicDiseaseController : Controller
     {
         private readonly IChronicDisease ChronicDisease;
@@ -27,7 +29,12 @@ namespace HealthRecord1.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var model = new ChronicDiseaseVM 
+            { 
+                SeverityScale = 5, // Default value
+                IsActive = true 
+            };
+            return View(model);
         }
 
         [HttpPost]

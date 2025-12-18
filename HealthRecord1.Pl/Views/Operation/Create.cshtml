@@ -2,21 +2,91 @@
 
 @{
     ViewBag.Title = "إضافة عملية";
-    var Item = Model;
 }
 
-<h2>إضافة عملية جديدة</h2>
-<br /> <br/>
-<p>@TempData["ErrorMessage"]</p>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body bg-gradient-success text-white py-4">
+                    <div class="d-flex align-items-center">
+                        <div class="icon-circle me-3">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <div>
+                            <h3 class="mb-1">إضافة عملية جراحية جديدة</h3>
+                            <p class="mb-0 opacity-75">قم بإدخال بيانات العملية الجراحية</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<form asp-action="Create" method="post">
-    <partial name="~/Views/Partials/Operations/CreateUpdate.cshtml" />
-    <button type="submit" class="btn btn-primary">إضافة</button>
-    <a asp-action="Index" class="btn btn-secondary">إلغاء</a>
-</form>
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        <partial name="~/Views/Partials/Operations/CreateUpdate.cshtml" />
+                        <hr class="my-4">
+                        <div class="d-flex gap-2 justify-content-end">
+                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-times me-2"></i>
+                                إلغاء
+                            </a>
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-save me-2"></i>
+                                حفظ البيانات
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-gradient-success {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    }
+
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+
+    .btn {
+        border-radius: 8px;
+        padding: 12px 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+</style>
 
 @section JqueryValidation {
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
-
 }
